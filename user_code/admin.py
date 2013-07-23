@@ -1,0 +1,5 @@
+from django.contrib import admin
+from user_code.models import Exercise, User_code
+
+
+admin.site.register(Exercise)

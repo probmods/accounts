@@ -1,0 +1,3 @@
+*.pyc
+prodmod/*.pyc
+prodmod/prodmod/*.pyc
