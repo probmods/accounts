@@ -3,3 +3,4 @@ from user_code.models import Exercise, User_code
 
 
 admin.site.register(Exercise)
+admin.site.register(User_code)

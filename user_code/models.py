@@ -14,4 +14,5 @@ class User_code(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise) 
     content = models.TextField()
-    date_created = models.DateTimeField('Date Saved')
+    date_created = models.DateTimeField(auto_now_add=True)
+    

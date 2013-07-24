@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.context_processors import csrf
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
+from user_code.models import Exercise
 
 def index(request):
 	return render(request, 'auth/index.html')
@@ -52,6 +53,30 @@ def log_in(request):
           form = AuthenticationForm()
   return render(request, 'auth/auth.html', {'state': state, 'form' : form})
 
+def home(request):
+    if request.user.is_authenticated():
+        return render(request, 'auth/home.html')
+    else:
+       return redirect('/')
+
 def log_out(request):
     logout(request)
     return redirect('/')
+    
+def all_exercises(request):
+    exercises = Exercise.objects.all()
+    return render(request, "auth/all_exercises.html", {'exercises' : exercises})
+    
+def each_exercise(request,string):
+    state = ""
+    exercise_name = "sorry, exercise doesn't exist"
+    try:
+        exercise = Exercise.objects.get(name=string)
+        exercise_name = exercise.name
+    except Exercise.DoesNotExist:
+        state = "this exercise does not exist"
+    return render(request, "auth/each_exercise.html", {'state': state, 'exercise_name' : exercise_name})
+      #get most recent code 
+      #or post new code
+  
+  

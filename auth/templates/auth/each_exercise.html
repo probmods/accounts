@@ -1,0 +1,23 @@
+{% extends "auth/base.html" %}
+
+{% block title %}{{exercise_name}}{% endblock %}
+
+{% block content %}	
+Exercise name: <b>{{exercise_name}}</b>
+	{{ state }}
+	</br>
+	</br>
+	<a href="{% url 'user_code:user_exercise' exercise_name %}">See recently saved code for this exercise</a>
+	
+	<form action="{% url 'user_code:user_exercise' exercise_name %}" method="post">
+		{% csrf_token %}
+		<textarea name="new_code"></textarea>
+	<input type="submit" value="Save code">
+	</form>
+	
+	</br></br>
+	<a href="/all_exercises/">Back to All Exercises </a><br/><br/>
+{% endblock %} 	
+
+
+

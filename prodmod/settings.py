@@ -115,13 +115,13 @@ TEMPLATE_DIRS = (
 AUTH_USER_MODEL = 'custom_user.EmailUser'
 
 INSTALLED_APPS = (
+    'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'custom_user',

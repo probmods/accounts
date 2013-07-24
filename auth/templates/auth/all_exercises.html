@@ -1,0 +1,14 @@
+{% extends "auth/base.html" %}
+{% block title %}All Exercises{% endblock %}
+
+{% block content %}	
+	All Exercises<br/><br/>
+	{% for e in exercises%}
+		<a href="{% url 'each_exercise' e.name %}">{{e.name}}</a>
+	{%endfor%}	
+		
+<br/><br/>
+		
+
+{% endblock %} 	
+
