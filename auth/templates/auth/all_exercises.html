@@ -4,8 +4,15 @@
 {% block content %}	
 	All Exercises<br/><br/>
 	{% for e in exercises%}
-		<a href="{% url 'each_exercise' e.name %}">{{e.name}}</a>
+		<a href="{% url 'each_exercise' e.name %}">{{e.name}}</a></br>
 	{%endfor%}	
+	 </br><br/>
+	TEST: add new exercise
+	<form action="{% url 'user_code:user_exercise' 'red' %}" method="post">
+		{% csrf_token %}
+		<textarea name="new_code"></textarea>
+	<input type="submit" value="Save code">
+	</form>
 		
 <br/><br/>
 		

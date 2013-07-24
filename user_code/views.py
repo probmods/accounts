@@ -19,8 +19,9 @@ def user_exercise(request, string):
         except Exercise.DoesNotExist:
             exercise = Exercise(name=string)
             exercise.save()
-        new_code = User_code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
-        new_code.save()
+        if request.user.is_authenticated():
+            new_code = User_code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
+            new_code.save()
         return redirect('/all_exercises/'+string)
     else:
         state = 'method is GET'
@@ -34,6 +35,21 @@ def user_exercise(request, string):
            if user_exercise_code.exists():
               code = user_exercise_code[0].content
            else:
-              code = "you do not have this exercise saved"
-        
+              code = "you do not have this exercise saved"   
+    return render(request, "code/exercise.html", {'code' : code, 'state': state})
+    
+def view_all(request, string): 
+    state = ''
+    try:
+       exercise = Exercise.objects.get(name=string)
+       exists = True 
+    except Exercise.DoesNotExist:
+       state = 'exercise does not exist'
+    if exists and request.user.is_authenticated():
+       user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+       if not user_exercise_code.exists():
+          code = user_exercise_code[0].content
+       else:
+          code = "you do not have this exercise saved"
+    
     return render(request, "code/exercise.html", {'code' : code, 'state': state})

@@ -75,6 +75,7 @@ def each_exercise(request,string):
         exercise_name = exercise.name
     except Exercise.DoesNotExist:
         state = "this exercise does not exist"
+        return render(request, "auth/does_not_exist.html", {'state': state})
     return render(request, "auth/each_exercise.html", {'state': state, 'exercise_name' : exercise_name})
       #get most recent code 
       #or post new code

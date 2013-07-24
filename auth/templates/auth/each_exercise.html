@@ -4,7 +4,7 @@
 
 {% block content %}	
 Exercise name: <b>{{exercise_name}}</b>
-	{{ state }}
+{{ state }}
 	</br>
 	</br>
 	<a href="{% url 'user_code:user_exercise' exercise_name %}">See recently saved code for this exercise</a>
@@ -16,6 +16,7 @@ Exercise name: <b>{{exercise_name}}</b>
 	</form>
 	
 	</br></br>
+
 	<a href="/all_exercises/">Back to All Exercises </a><br/><br/>
 {% endblock %} 	
 

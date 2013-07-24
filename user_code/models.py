@@ -15,4 +15,7 @@ class User_code(models.Model):
     exercise_id = models.ForeignKey(Exercise) 
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+    def __unicode__(self):
+        return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
+        
     
