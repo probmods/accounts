@@ -70,13 +70,16 @@ def all_exercises(request):
 def each_exercise(request,string):
     state = ""
     exercise_name = "sorry, exercise doesn't exist"
+    user = False
+    if request.user.is_authenticated():
+      user = True
     try:
         exercise = Exercise.objects.get(name=string)
         exercise_name = exercise.name
     except Exercise.DoesNotExist:
         state = "this exercise does not exist"
         return render(request, "auth/does_not_exist.html", {'state': state})
-    return render(request, "auth/each_exercise.html", {'state': state, 'exercise_name' : exercise_name})
+    return render(request, "auth/each_exercise.html", {'state': state, 'exercise_name' : exercise_name, 'auth_user':user})
       #get most recent code 
       #or post new code
   

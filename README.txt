@@ -1,9 +1,12 @@
+Probabilistic Model Exercises
+-----------------------------
 This directory contains the files of a Django project that 
 1) provides an account system for users and 
 2) saves and retrieves exercise code for an authenticated user.
 
 There are two apps in this project called auth and user_code.
 Auth:
+------
 Wraps all the functionality to manage user accounts. It also provides
 a UI platform to view and save code.
 It provides the view and template for the following urls: 
@@ -36,6 +39,7 @@ It provides the view and template for the following urls:
 	a textarea to save a new instance of an exercise code. 
 
 User_code:
+-----------
 Takes care of the functionality of retrieving and saving exercise codes. 
 It provides the view and template for this url:
 	- /code/<exercise_name>
@@ -49,13 +53,8 @@ It provides the view and template for this url:
 	user id and the exercise name (that now exists). 
 	
 
+Deployment: 
+make sure that 'custom_user' and 'south' are added to the INSTALLED_APPS section of settings.py
 
 
-
-
-
-
-Reminder: To deploy onto a new system, make sure all the requirements packages are installed correctly (see requirements.txt). Especially make sure that 'custom_user' and 'south' are added to the INSTALLED_APPS section of settings.py
-
-Probabilistic Model Church Code Accounts
 
