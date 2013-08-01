@@ -39,12 +39,12 @@ def log_in(request):
           form = AuthenticationForm(data=request.POST)
           username = request.POST['username']
           password = request.POST['password']
-          user = authenticate(username=username, password=password)
+          user = authenticate(username=username, password=password) 
           if user is not None:
               if user.is_active:
                   login(request, user)
                   state = "You're successfully logged in!"
-                  return redirect('/home')
+                  return redirect('/home/')
               else:
                 state = "Your account is not active, please contact the site admin."
           else:
@@ -57,7 +57,7 @@ def home(request):
     if request.user.is_authenticated():
         return render(request, 'auth/home.html')
     else:
-       return redirect('/')
+       return redirect('/login/')
 
 def log_out(request):
     logout(request)
