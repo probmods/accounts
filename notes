@@ -1,3 +1,54 @@
 /homepage link is undefined, and is not linked in the views.py of auth
 
 directly working on user_code app.
+
+
+installing nginx and configuring:
+/etc/nginx/conf.d/____
+
+installing postgres:
+/etc/init.d/postgresql 
+
+sudo apt-get postgresql postgresql-contrib
+sudo passwd postgres
+	user:postgres
+	pass:db
+su postgres
+	you have to loginto the postgres account on linode 
+createuser django --pwprompt
+	creates the user for the db
+	user: prodmod_user
+	pass: dev0208
+initdb databasename
+service postgresql start 
+
+psql create database prodmod owner django
+
+exit
+sudo /etc/init.d/postgresql restart
+
+postgres config files:
+reating new cluster (configuration: /etc/postgresql/9.1/main, data: /var/lib/postgresql/9.1/main)...
+Moving configuration file /var/lib/postgresql/9.1/main/postgresql.conf to /etc/postgresql/9.1/main...
+Moving configuration file /var/lib/postgresql/9.1/main/pg_hba.conf to /etc/postgresql/9.1/main...
+Moving configuration file /var/lib/postgresql/9.1/main/pg_ident.conf to /etc/postgresql/9.1/main...
+Configuring postgresql.conf to use port 5432...
+
+working urls:
+
+domain.com/
+domain.com/index
+domain.com/home
+domain.com/login
+domain.com/register
+domain.com/logout (log_out)
+
+domain.com/all_exercises   (all_exercises)
+domain.com/all_exercises/exercise_name  (each_exercise)
+domain.com/code/exercise_name (usercode:user_exercise)
+
+
+Changing djdango project name:
+settings.py
+manage.py
+wsgi.py

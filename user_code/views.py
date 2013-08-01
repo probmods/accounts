@@ -25,6 +25,7 @@ def user_exercise(request, string):
         return redirect('/all_exercises/'+string)
     else:
         state = 'method is GET'
+        exists = False
         try:
            exercise = Exercise.objects.get(name=string)
            exists = True 
@@ -40,6 +41,7 @@ def user_exercise(request, string):
     
 def view_all(request, string): 
     state = ''
+    exists = False
     try:
        exercise = Exercise.objects.get(name=string)
        exists = True 
