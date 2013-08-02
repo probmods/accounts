@@ -10,10 +10,9 @@ from django.utils import timezone
 
 
 def user_exercise(request, string):
-    state = 'default'
+    state = ''
     code = ''
     if request.method == 'POST':
-        state = 'method is POST'
         try:
             exercise = Exercise.objects.get(name=string)
         except Exercise.DoesNotExist:
@@ -22,15 +21,15 @@ def user_exercise(request, string):
         if request.user.is_authenticated():
             new_code = User_code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
             new_code.save()
-        return redirect('/all_exercises/'+string)
-    else:
-        state = 'method is GET'
+        return redirect('/exercise/'+string+'/')
+    else: #GET 
         exists = False
         try:
            exercise = Exercise.objects.get(name=string)
            exists = True 
         except Exercise.DoesNotExist:
-           code = 'exercise does not exist'
+           state = 'This exercise does not exist'
+           return render(request, "auth/does_not_exist.html", {'state': state})
         if exists and request.user.is_authenticated():
            user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
            if user_exercise_code.exists():
