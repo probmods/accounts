@@ -20,6 +20,6 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^exercises/all$', all_exercises, name ='all_exercises'),
-    url(r'^exercises/(?P<string>[-\w]+)/$', each_exercise, name ='each_exercise'),
+    url(r'^exercise/_all/$', all_exercises, name ='all_exercises'),
+    url(r'^exercise/(?P<string>[-\w]+)/$', each_exercise, name ='each_exercise'),
 )
