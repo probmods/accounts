@@ -18,4 +18,12 @@ class User_code(models.Model):
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
+class Saved_code(models.Model):
+    code_id = models.ForeignKey(User_code)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
+    exercise_id = models.ForeignKey(Exercise)
+    forest_errors = models.TextField()
+    forest_plots = models.TextField()
+    forest_results = models.TextField()
+    date_saved = models.DateTimeField(auto_now_add=True)
     
