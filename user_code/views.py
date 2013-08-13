@@ -7,8 +7,11 @@ from django.contrib.sessions.models import Session
 from user_code.models import User_code, Exercise
 from django.conf.urls import patterns, url
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 
+@cache_page(60 * 60 * 24) # 60 seconds (1 minute) * 60 minutes (1 hour) * 24 hours (1 day)
 def user_exercise(request, string):
     state = ''
     code = ''
@@ -21,21 +24,25 @@ def user_exercise(request, string):
         if request.user.is_authenticated():
             new_code = User_code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
             new_code.save()
-        return redirect('/exercise/'+string+'/')
+            cache.delete(string)
+        return redirect('/exercise/'+string)
     else: #GET 
-        exists = False
-        try:
-           exercise = Exercise.objects.get(name=string)
-           exists = True 
-        except Exercise.DoesNotExist:
-           state = 'This exercise does not exist'
-           return render(request, "auth/does_not_exist.html", {'state': state})
-        if exists and request.user.is_authenticated():
-           user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
-           if user_exercise_code.exists():
-              code = user_exercise_code[0].content
-           else:
-              code = "you do not have this exercise saved"   
+        if request.user.is_authenticated():
+          results = cache.get(string)
+          if not results:
+            try:
+               exercise = Exercise.objects.get(name=string)
+               exists = True 
+            except Exercise.DoesNotExist:
+               state = 'This exercise does not exist'
+               return render(request, "auth/does_not_exist.html", {'state': state})
+            if exists:
+               user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+               if user_exercise_code.exists():
+                  code = user_exercise_code[0].content
+                  cache.set(string, code)
+               else:
+                  state = "you do not have this exercise saved"
     return render(request, "code/exercise.html", {'code' : code, 'state': state})
     
 def view_all(request, string): 

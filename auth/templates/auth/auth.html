@@ -4,13 +4,12 @@
 
 {% block content %}	
 	{{ state }}
-	<form action="/login/" method="post">
+	<form action="{% url 'log_in'%}" method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<input type="submit" value="Log In" />
 	</form>
 	</br></br>
-	<a href='/'>back</a>
 {% endblock %} 	
 
 

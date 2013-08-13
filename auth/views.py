@@ -44,7 +44,7 @@ def log_in(request):
               if user.is_active:
                   login(request, user)
                   state = "You're successfully logged in!"
-                  return redirect('/home/')
+                  return redirect('home')
               else:
                 state = "Your account is not active, please contact the site admin."
           else:
@@ -57,11 +57,11 @@ def home(request):
     if request.user.is_authenticated():
         return render(request, 'auth/home.html')
     else:
-       return redirect('/login/')
+       return redirect('log_in')
 
 def log_out(request):
     logout(request)
-    return redirect('/')
+    return redirect('index')
     
 def all_exercises(request):
     exercises = Exercise.objects.all()
