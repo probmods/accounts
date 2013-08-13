@@ -28,8 +28,8 @@ def user_exercise(request, string):
         return redirect('/exercise/'+string)
     else: #GET 
         if request.user.is_authenticated():
-          results = cache.get(string)
-          if not results:
+          code = cache.get(string)
+          if not code:
             try:
                exercise = Exercise.objects.get(name=string)
                exists = True 
@@ -42,7 +42,7 @@ def user_exercise(request, string):
                   code = user_exercise_code[0].content
                   cache.set(string, code)
                else:
-                  state = "you do not have this exercise saved"
+                  state = "you do not have this exercise saved"     
     return render(request, "code/exercise.html", {'code' : code, 'state': state})
     
 def view_all(request, string): 
