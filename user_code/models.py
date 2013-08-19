@@ -6,7 +6,7 @@ from django.conf import settings
 # Create your models here.
     
 class Exercise(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=70, db_index=True)
     def __unicode__(self):
         return self.name
         
@@ -18,7 +18,7 @@ class Code(models.Model):
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
-class Results(models.Model):
+class Result(models.Model):
     code_id = models.ForeignKey(Code)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise)

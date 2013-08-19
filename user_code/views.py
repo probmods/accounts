@@ -4,7 +4,7 @@ import datetime
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.sessions.models import Session
-from user_code.models import Code, Exercise, Results
+from user_code.models import Code, Exercise, Result
 from django.conf.urls import patterns, url
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
