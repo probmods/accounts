@@ -4,7 +4,7 @@ import datetime
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.sessions.models import Session
-from user_code.models import User_code, Exercise
+from user_code.models import Code, Exercise, Results
 from django.conf.urls import patterns, url
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
@@ -22,7 +22,7 @@ def user_exercise(request, string):
             exercise = Exercise(name=string)
             exercise.save()
         if request.user.is_authenticated():
-            new_code = User_code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
+            new_code = Code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
             new_code.save()
             cache.delete(string)
         return redirect('/exercise/'+string)
@@ -35,9 +35,9 @@ def user_exercise(request, string):
                exists = True 
             except Exercise.DoesNotExist:
                state = 'This exercise does not exist'
-               return render(request, "auth/does_not_exist.html", {'state': state})
+               return render(request, "accounts/does_not_exist.html", {'state': state})
             if exists:
-               user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+               user_exercise_code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
                if user_exercise_code.exists():
                   code = user_exercise_code[0].content
                   cache.set(string, code)
@@ -54,7 +54,7 @@ def view_all(request, string):
     except Exercise.DoesNotExist:
        state = 'exercise does not exist'
     if exists and request.user.is_authenticated():
-       user_exercise_code = User_code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+       user_exercise_code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
        if not user_exercise_code.exists():
           code = user_exercise_code[0].content
        else:

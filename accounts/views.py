@@ -11,7 +11,7 @@ from django.contrib.sessions.models import Session
 from user_code.models import Exercise
 
 def index(request):
-	return render(request, 'auth/index.html')
+	return render(request, 'accounts/index.html')
 	
 def register(request):
     state = ''
@@ -22,12 +22,12 @@ def register(request):
             new_user.is_active = True
             state = "Successfully created an account, please login"
             username = ''
-            return render_to_response('auth/auth.html', {'state':state, 'username': username, 'form': AuthenticationForm()})
+            return render_to_response('accounts/auth.html', {'state':state, 'username': username, 'form': AuthenticationForm()})
         else: 
             state = 'Sorry, there was an error processing your request'
     else:   #create user
         form = EmailUserCreationForm() 
-    return render(request, "auth/register.html", {'form': form, 'state': state})
+    return render(request, "accounts/register.html", {'form': form, 'state': state})
 
 def log_in(request):
   if request.user.is_authenticated():
@@ -51,11 +51,11 @@ def log_in(request):
               state = "Your username and/or password was incorrect."
       else:
           form = AuthenticationForm()
-  return render(request, 'auth/auth.html', {'state': state, 'form' : form})
+  return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
 
 def home(request):
     if request.user.is_authenticated():
-        return render(request, 'auth/home.html')
+        return render(request, 'accounts/home.html')
     else:
        return redirect('log_in')
 
@@ -65,7 +65,7 @@ def log_out(request):
     
 def all_exercises(request):
     exercises = Exercise.objects.all()
-    return render(request, "auth/all_exercises.html", {'exercises' : exercises})
+    return render(request, "accounts/all_exercises.html", {'exercises' : exercises})
     
 def each_exercise(request,string):
     state = ""
@@ -78,8 +78,8 @@ def each_exercise(request,string):
         exercise_name = exercise.name
     except Exercise.DoesNotExist:
         state = "this exercise does not exist"
-        return render(request, "auth/does_not_exist.html", {'state': state})
-    return render(request, "auth/each_exercise.html", {'state': state, 'exercise_name' : exercise_name, 'auth_user':user})
+        return render(request, "accounts/does_not_exist.html", {'state': state})
+    return render(request, "accounts/each_exercise.html", {'state': state, 'exercise_name' : exercise_name, 'auth_user':user})
       #get most recent code 
       #or post new code
   

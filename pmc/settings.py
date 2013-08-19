@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'auth',
+    'accounts',
     'user_code',
 )
 
@@ -167,4 +167,4 @@ CACHES = {
         'LOCATION': '50.116.23.233:11211',
     }
 }
-
+    

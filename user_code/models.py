@@ -10,7 +10,7 @@ class Exercise(models.Model):
     def __unicode__(self):
         return self.name
         
-class User_code(models.Model):
+class Code(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise) 
     content = models.TextField()
@@ -18,8 +18,8 @@ class User_code(models.Model):
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
-class Saved_code(models.Model):
-    code_id = models.ForeignKey(User_code)
+class Results(models.Model):
+    code_id = models.ForeignKey(Code)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise)
     forest_errors = models.TextField()

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from user_code.models import Exercise, User_code, Saved_code
+from user_code.models import Exercise, Code, Results
 
 
 admin.site.register(Exercise)
-admin.site.register(User_code)
-admin.site.register(Saved_code)
+admin.site.register(Code)
+admin.site.register(Results)

@@ -1,0 +1,13 @@
+Using South the migrate things:
+
+INITIALIZATION (restarting):
+1) comment out all the apps, except for contrib stuff 
+2) run syncdb once so that southhistory gets migrated
+3) uncomment the apps and run this line PER APP
+"$ ./manage.py schemamigration APPNAME --initial"
+
+
+4) run this PER APP
+ 	./manage.py migrate APPNAME
+
+5) all ready! 
