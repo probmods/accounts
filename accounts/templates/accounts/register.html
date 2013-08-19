@@ -1,0 +1,18 @@
+
+{% extends "accounts/base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}	
+	{{ state }}
+	<form action="{% url 'register'%}" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Create the account">
+	</form>
+	</br></br>
+	<a href='/'>back</a>
+{% endblock %} 	
+
+
+

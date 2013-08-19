@@ -52,3 +52,10 @@ Changing djdango project name:
 settings.py
 manage.py
 wsgi.py
+
+
+
+
+
+
+auth -> accounts (change in settings.py)

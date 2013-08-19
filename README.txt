@@ -5,7 +5,8 @@ This directory contains the files of a Django project that
 2) saves and retrieves exercise code for an authenticated user.
 
 There are two apps in this project called auth and user_code.
-Auth:
+
+Accounts:
 ------
 Wraps all the functionality to manage user accounts. It also provides
 a UI platform to view and save code.

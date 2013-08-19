@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from auth.views import index, home, log_in, register, log_out,all_exercises, each_exercise
+from accounts.views import index, home, log_in, register, log_out,all_exercises, each_exercise
 from django.contrib import admin
 admin.autodiscover()
 
