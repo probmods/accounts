@@ -4,12 +4,12 @@ import datetime
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.sessions.models import Session
-from user_code.models import Code, Exercise, Results
+from user_code.models import Code, Exercise, Result
 from django.conf.urls import patterns, url
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
-
+from user_code.forms import ResultForm
 
 @cache_page(60 * 60 * 24) # 60 seconds (1 minute) * 60 minutes (1 hour) * 24 hours (1 day)
 def user_exercise(request, string):
@@ -61,3 +61,28 @@ def view_all(request, string):
           code = "you do not have this exercise saved"
     
     return render(request, "code/exercise.html", {'code' : code, 'state': state})
+    
+
+def post_result(request):
+    form = ResultForm()
+    return render(request, "code/post_result.html", {'form': form})
+    
+def result(request):
+    state = ''
+    if request.method == 'POST' and request.user.is_authenticated():
+        exercise_name = request.POST['exercise_id']
+        try: 
+          exercise = Exercise.objects.get(name=exercise_name)
+          code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+          form = ResultForm(request.POST)
+          result = form.save(commit=False)
+          result.exercise_id = exercise
+          result.user_id = request.user
+          result.code_id = code[0]
+          result.save()
+          state = 'result saved'
+        except Exercise.DoesNotExist:
+          state = 'This exercise does not exist'
+          return render(request, "accounts/does_not_exist.html", {'state': state})
+    return render(request, "code/result.html", {'state': state})
+  

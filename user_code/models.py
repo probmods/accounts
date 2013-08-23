@@ -18,7 +18,7 @@ class Code(models.Model):
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
-class Results(models.Model):
+class Result(models.Model):
     code_id = models.ForeignKey(Code)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise)
@@ -26,4 +26,3 @@ class Results(models.Model):
     forest_plots = models.TextField()
     forest_results = models.TextField()
     date_saved = models.DateTimeField(auto_now_add=True)
-    
