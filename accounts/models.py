@@ -38,8 +38,10 @@ class PmcUserManager(BaseUserManager):
         
 class PmcUser(AbstractEmailUser):
     institution = models.CharField(max_length=70)
-    education_status = models.CharField(max_length=70) 
-    name = models.CharField(max_length=70, null=True)
+    education_status = models.CharField(max_length=70)
+    ## django docs say to avoid using null = true for charfields
+    ## HT https://docs.djangoproject.com/en/1.5/ref/models/fields/
+    name = models.CharField(max_length=70, blank = True)
     
     REQUIRED_FIELDS = ['institution', 'education_status']
     
