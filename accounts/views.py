@@ -9,6 +9,8 @@ from django.core.context_processors import csrf
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from user_code.models import Exercise
+from accounts.models import PmcUser
+from accounts.forms import PmcUserCreationForm
 
 def index(request):
 	return render(request, 'accounts/index.html')
@@ -16,17 +18,18 @@ def index(request):
 def register(request):
     state = ''
     if request.method == 'POST':   # save user
-        form = EmailUserCreationForm(request.POST)
+        form = PmcUserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             new_user.is_active = True
             state = "Successfully created an account, please login"
-            username = ''
-            return render_to_response('accounts/auth.html', {'state':state, 'username': username, 'form': AuthenticationForm()})
+            new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
+            login(request, new_user)
+            return redirect("home")
         else: 
             state = 'Sorry, there was an error processing your request'
     else:   #create user
-        form = EmailUserCreationForm() 
+        form = PmcUserCreationForm() 
     return render(request, "accounts/register.html", {'form': form, 'state': state})
 
 def log_in(request):

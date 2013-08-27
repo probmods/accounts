@@ -8,6 +8,6 @@ INITIALIZATION (restarting):
 
 
 4) run this PER APP
- 	./manage.py migrate APPNAME
+ 	./manage.py migrate APPNAME (--fake)
 
 5) all ready! 

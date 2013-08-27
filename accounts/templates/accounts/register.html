@@ -7,7 +7,35 @@
 	{{ state }}
 	<form action="{% url 'register'%}" method="post">
 		{% csrf_token %}
-		{{ form.as_p }}
+		{{form.email.errors}}
+		<p>{{form.email.label}} *:
+		{{form.email}}</p>
+		<p>
+			
+		{{form.name.errors}}	
+		<p>{{form.name.label}} :
+		{{form.name}}</p>
+		<p>	
+		
+		{{form.institution.errors}}	
+	   	<p>{{form.institution.label}} *:
+		{{form.institution}}</p>
+		
+		{{form.education_status.errors}}
+		<p>{{form.education_status.label}} *:
+		{% for radio in form.education_status %}
+		  </br> {{ radio }}
+		{% endfor %}: {{form.other}}</p>
+		
+		{{form.password1.errors}}
+		<p>{{form.password1.label}} *:
+		{{form.password1}}</p>
+		<p>
+		{{form.password2.errors}}	
+		<p>{{form.password2.label}} *:
+		{{form.password2}}{{ form.password2.help_text }}</p>
+		<p>
+
 		<input type="submit" value="Create the account">
 	</form>
 	</br></br>
@@ -16,3 +44,11 @@
 
 
 
+<p><label for="education_status">Education Status:</label></br></br>
+
+ <input type="radio" id="education_status_professor" maxlength="100" name="education_status" value="Professor"/> Professor<br/>
+<input type="radio" id="education_status_postdoc" maxlength="100" name="education_status" value="Post-doc"/>Post-doc<br/>
+<input type="radio" id="education_status_phd" maxlength="100" name="education_status"value="Ph.D student" />Ph.D Student<br/>
+<input type="radio" id="education_status_undergrad" maxlength="100" name="education_status" value="Undergrad"/>Undergrad<br/>
+<input type="radio" id="education_status_other" maxlength="100" name="education_status" value="other"/>Other  <input type="text" name="other" />
+</p><br/><br/>
