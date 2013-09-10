@@ -47,7 +47,9 @@ def log_in(request):
               if user.is_active:
                   login(request, user)
                   state = "You're successfully logged in!"
-                  return redirect('home')
+                  response = redirect('home')
+                  response.set_cookie('loggedin','1')
+                  return response
               else:
                 state = "Your account is not active, please contact the site admin."
           else:
@@ -64,7 +66,9 @@ def home(request):
 
 def log_out(request):
     logout(request)
-    return redirect('index')
+    response = redirect('index')
+    response.delete_cookie('loggedin')
+    return response
     
 def all_exercises(request):
     exercises = Exercise.objects.all()
