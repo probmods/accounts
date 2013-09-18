@@ -1,54 +1,79 @@
-
 {% extends "accounts/base.html" %}
 
 {% block title %}Create an account{% endblock %}
 
 {% block content %}	
 	{{ state }}
+<style>
+  .label {
+  font-family: Verdana;
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  }
+
+  input {
+  margin: 0
+  }
+
+  ul.errorlist {
+  display: inline;
+  color: red;
+  list-style-type: none;
+  text-transform: none;
+  margin: 0;
+  padding: 0
+  }
+
+  ul.errorlist li {
+  margin: 0;
+  padding: 0;
+  }
+
+  input[type=radio] {
+  margin: 4px
+  }
+
+</style>
+
 	<form action="{% url 'register'%}" method="post">
 		{% csrf_token %}
-		{{form.email.errors}}
-		<p>{{form.email.label}} *:
-		{{form.email}}</p>
+    
 		<p>
+      <div class='label'>{{form.email.label}} {{form.email.errors}}</div>
+		  {{form.email}} 
+    </p>
 			
-		{{form.name.errors}}	
-		<p>{{form.name.label}} :
-		{{form.name}}</p>
-		<p>	
-		
-		{{form.institution.errors}}	
-	   	<p>{{form.institution.label}} *:
-		{{form.institution}}</p>
-		
-		{{form.education_status.errors}}
-		<p>{{form.education_status.label}} *:
-		{% for radio in form.education_status %}
-		  </br> {{ radio }}
-		{% endfor %}: {{form.other}}</p>
-		
-		{{form.password1.errors}}
-		<p>{{form.password1.label}} *:
-		{{form.password1}}</p>
+
 		<p>
-		{{form.password2.errors}}	
-		<p>{{form.password2.label}} *:
-		{{form.password2}}{{ form.password2.help_text }}</p>
+      <div class='label'>{{form.name.label}} (OPTIONAL) {{form.name.errors}} </div>
+		  {{form.name}}
+    </p> 
+
+	  <p>
+      <div class='label'>{{form.institution.label}} {{form.institution.errors}}	</div>
+		  {{form.institution}}
+    </p> 
+		
+		<p>
+      <div class='label'>{{form.education_status.label}} {{form.education_status.errors}}</div>
+		  {% for radio in form.education_status %}
+		  </br> {{ radio }}{% endfor %}:<br />{{form.other}}
+    </p>
+
+		<p style='margin-top: 2.5em'>
+      <div class='label'>{{form.password1.label}} {{form.password1.errors}}</div>
+		  {{form.password1}}
+    </p>
+		<p>
+      
+		<p>
+      <div class='label'>Confirm 		{{form.password2.errors}}	</div>
+		  {{form.password2}} 
 		<p>
 
-		<input type="submit" value="Create the account">
+		<input type="submit" value="Register">
 	</form>
 	</br></br>
 	<a href='/'>back</a>
-{% endblock %} 	
-
-
-
-<p><label for="education_status">Education Status:</label></br></br>
-
- <input type="radio" id="education_status_professor" maxlength="100" name="education_status" value="Professor"/> Professor<br/>
-<input type="radio" id="education_status_postdoc" maxlength="100" name="education_status" value="Post-doc"/>Post-doc<br/>
-<input type="radio" id="education_status_phd" maxlength="100" name="education_status"value="Ph.D student" />Ph.D Student<br/>
-<input type="radio" id="education_status_undergrad" maxlength="100" name="education_status" value="Undergrad"/>Undergrad<br/>
-<input type="radio" id="education_status_other" maxlength="100" name="education_status" value="other"/>Other  <input type="text" name="other" />
-</p><br/><br/>
+{% endblock %}
