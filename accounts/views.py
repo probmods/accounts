@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from user_code.models import Exercise
 from accounts.models import PmcUser
-from accounts.forms import PmcUserCreationForm
+from accounts.forms import PmcUserCreationForm, PmcUserChangeForm
 
 def index(request):
 	return render(request, 'accounts/index.html')
@@ -29,7 +29,7 @@ def register(request):
         else: 
             state = 'Sorry, there was an error processing your request'
     else:   #create user
-        form = PmcUserCreationForm() 
+        form = PmcUserCreationForm()
     return render(request, "accounts/register.html", {'form': form, 'state': state})
 
 def log_in(request):
@@ -90,4 +90,7 @@ def each_exercise(request,string):
       #get most recent code 
       #or post new code
   
-  
+
+def profile(request):
+    form = PmcUserChangeForm()
+    return render(request, 'accounts/profile.html', {'form': form})

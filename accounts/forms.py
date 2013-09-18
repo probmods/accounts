@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserChangeForm
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import PmcUser
@@ -23,10 +23,10 @@ class PmcUserCreationForm(forms.ModelForm):
         widget=forms.PasswordInput,
         help_text=_("Enter the same password as above, for verification."))
     PROF, PSTD, PHDS, UDGD, OTHR = 'Professor', 'Post-doc', 'Ph.D Student', 'Undergrad', 'Other'    
-    EDUCATION_CHOICES = ((PROF, 'Professor'),
-                          (PSTD, 'Post-doc'),
+    EDUCATION_CHOICES = ((UDGD, 'Undergrad'),
                           (PHDS, 'Ph.D Student'),
-                          (UDGD, 'Undergrad'),
+                          (PSTD, 'Post-doc'),
+                          (PROF, 'Professor'),
                           (OTHR, 'Other'),
                         )
     education_status= forms.ChoiceField(choices=EDUCATION_CHOICES, widget=forms.RadioSelect)
@@ -35,21 +35,24 @@ class PmcUserCreationForm(forms.ModelForm):
     class Meta:
         model = PmcUser
         fields = ('email','institution','name',)
-        
-    def clean_education(self):
-        education_status = self.cleaned_data.get('education_status')
-        if not education_status:
-            forms.VvalidationError(self.error_message['education_status_required'])
-        if education_status == 'Other':
-            return self.cleaned_data.get('other')
-        else:
-            return education_status
+
+    ## it doesn't seem like the Vvalidation [sic] code is actually called,
+    ## which makes me think this code is redundant with the blank checking field
+    ## stuff that django does
+    # def clean_education(self):
+    #     education_status = self.cleaned_data.get('education_status')
+    #     if not education_status:
+    #         forms.VvalidationError(self.error_message['education_status_required'])
+    #     if education_status == 'Other':
+    #         return self.cleaned_data.get('other')
+    #     else:
+    #         return education_status
             
-    def clean_institution(self):
-        institution = self.cleaned_data.get('institution')
-        if not institution:
-            forms.ValidationError(self.error_message['institution_required'])
-        return institution
+    # def clean_institution(self):
+    #     institution = self.cleaned_data.get('institution')
+    #     if not institution:
+    #         raise forms.ValidationError(self.error_message['institution_required'])
+    #     return institution
         
     def clean_email(self):
         # Since EmailUser.email is unique, this check is redundant,
