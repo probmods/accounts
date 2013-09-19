@@ -18,12 +18,11 @@ class Code(models.Model):
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
-class Results(models.Model):
+class Result(models.Model):
     code_id = models.ForeignKey(Code)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     exercise_id = models.ForeignKey(Exercise)
-    forest_errors = models.TextField()
-    forest_plots = models.TextField()
-    forest_results = models.TextField()
+    forest_errors = models.TextField(blank = True)
+    forest_plots = models.TextField(blank = True)
+    forest_results = models.TextField(blank = True)
     date_saved = models.DateTimeField(auto_now_add=True)
-    

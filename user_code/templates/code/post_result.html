@@ -1,0 +1,14 @@
+{% extends "accounts/base.html" %}
+{% block title %}Post Results{% endblock %}
+
+{% block content %}	
+	Post Results<br/><br/>
+	<form action="{% url 'result'%}" method="post">
+		{% csrf_token %}
+		<p><label for="exercise_id">Exercise id:</label> <input id="exercise_id" name="exercise_id" type="text" /></p>
+		{{form.as_p}}
+		<input type="submit" value="Save Result">
+	</form>
+<br/><br/>
+
+{% endblock %}
