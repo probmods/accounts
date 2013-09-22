@@ -21,7 +21,6 @@ def dummyetag(request, *args, **kwargs):
 ## TODO: last modified is the time of insertion into database
 ## we need to set and get this from memcache based on the user and exerciseName
 
-@csrf_exempt
 #@condition(etag_func = dummyetag)
 #@cache_page(60 * 60 * 24) # 60 seconds (1 minute) * 60 minutes (1 hour) * 24 hours (1 day)
 def user_exercise(request, string):
