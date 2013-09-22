@@ -11,7 +11,7 @@ class Exercise(models.Model):
         return self.name
         
 class Code(models.Model):
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, default=None)
     exercise_id = models.ForeignKey(Exercise) 
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
@@ -23,7 +23,7 @@ class Code(models.Model):
         
 class Result(models.Model):
     code_id = models.ForeignKey(Code)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, blank = True, null = True, default = None)
     exercise_id = models.ForeignKey(Exercise)
     forest_errors = models.TextField(blank = True)
     forest_plots = models.TextField(blank = True)
