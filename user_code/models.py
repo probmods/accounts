@@ -15,6 +15,9 @@ class Code(models.Model):
     exercise_id = models.ForeignKey(Exercise) 
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+    engine = models.CharField(max_length = 50, default = 'webchurch')
+    isRevert = models.BooleanField(default = False)
+    isRerun = models.BooleanField(default = False)
     def __unicode__(self):
         return "Exercise: " +self.exercise_id.name + "    Content: " + self.content + "    User: " + self.user_id.email
         
