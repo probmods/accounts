@@ -25,7 +25,9 @@ def register(request):
             state = "Successfully created an account, please login"
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
             login(request, new_user)
-            return redirect("home")
+            response = redirect("home")
+            response.set_cookie('gg', 2)
+            return response
         else: 
             state = 'Sorry, there was an error processing your request'
     else:   #create user
@@ -48,7 +50,7 @@ def log_in(request):
                   login(request, user)
                   state = "You're successfully logged in!"
                   response = redirect('home')
-                  response.set_cookie('loggedin','1')
+                  response.set_cookie('gg','1')
                   return response
               else:
                 state = "Your account is not active, please contact the site admin."
@@ -67,7 +69,7 @@ def home(request):
 def log_out(request):
     logout(request)
     response = redirect('index')
-    response.delete_cookie('loggedin')
+    response.delete_cookie('gg')
     return response
     
 def all_exercises(request):

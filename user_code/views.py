@@ -32,9 +32,15 @@ def user_exercise(request, string):
         except Exercise.DoesNotExist:
             exercise = Exercise(name=string)
             exercise.save()
-        if request.user.is_authenticated():
-            new_code = Code(user_id = request.user, exercise_id = exercise, content = request.POST['new_code'])
-            new_code.save()
+        
+        new_code = Code(user_id = request.user,
+                        exercise_id = exercise,
+                        content = request.POST['code'],
+                        engine = request.POST['engine'],
+                        isRevert = request.POST['isRevert'],
+                        isRerun = request.POST['isRerun'])
+        
+        new_code.save()
             # cache.set(string, request.POST['new_code'])
             # print cache.get(string)
         return redirect('/exercise/'+string)
