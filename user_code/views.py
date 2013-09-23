@@ -12,8 +12,8 @@ from django.core.cache import cache
 from user_code.forms import ResultForm
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import condition
-
 from django.core.exceptions import PermissionDenied
+from django.utils import simplejson
 
 
 ## TODO: etag is row id of resource
@@ -66,10 +66,13 @@ def user_exercise(request, string):
                user_exercise_code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-id')[:1]
                if user_exercise_code.exists():
                   code = user_exercise_code[0].content
-                  # cache.set(string, code)
+                  engine = user_exercise_code[0].engine
+                  # cache.set(string, code) 
                else:
                    return HttpResponseNotFound('page not found')
-    return render(request, "code/exercise.html", {'code' : code})
+          data = simplejson.dumps({'code': code, 'engine': engine})
+          return HttpResponse(data, mimetype = 'application/json')
+    # return render(request, "code/exercise.html", {'code' : code})
     
 def view_all(request, string): 
     state = ''
@@ -124,4 +127,3 @@ def result(request):
           return HttpResponseNotFound('page not found')
         
     return render(request, "code/result.html")
-  
