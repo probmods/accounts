@@ -13,6 +13,9 @@ from user_code.forms import ResultForm
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import condition
 
+from django.core.exceptions import PermissionDenied
+
+
 ## TODO: etag is row id of resource
 ## we need to set and get this from memcache based on the user and exerciseName
 def dummyetag(request, *args, **kwargs):
@@ -24,8 +27,11 @@ def dummyetag(request, *args, **kwargs):
 #@condition(etag_func = dummyetag)
 #@cache_page(60 * 60 * 24) # 60 seconds (1 minute) * 60 minutes (1 hour) * 24 hours (1 day)
 def user_exercise(request, string):
-    state = ''
     code = ''
+    user = None
+    if request.user.is_authenticated():
+        user = request.user
+    
     if request.method == 'POST':
         try:
             exercise = Exercise.objects.get(name=string)
@@ -33,22 +39,23 @@ def user_exercise(request, string):
             exercise = Exercise(name=string)
             exercise.save()
         
-        new_code = Code(user_id = request.user,
+        new_code = Code(user_id = user,
                         exercise_id = exercise,
                         content = request.POST['code'],
                         engine = request.POST['engine'],
                         isRevert = request.POST['isRevert'],
-                        isRerun = request.POST['isRerun'])
+                        isRerun = request.POST['isRerun'],
+                        )
+        if user == None:
+            new_code.session_key = request.session.session_key
         
         new_code.save()
             # cache.set(string, request.POST['new_code'])
             # print cache.get(string)
-        return redirect('/exercise/'+string)
+        return HttpResponse(new_code.id)
+    
     else: #GET 
         if request.user.is_authenticated(): 
-          # code = cache.get(string)
-          # cache.set(string, 'blah')
-          # print string, cache.get(string), cache
           if not code:
             try:
                exercise = Exercise.objects.get(name=string)
@@ -56,7 +63,7 @@ def user_exercise(request, string):
             except Exercise.DoesNotExist:
                return HttpResponseNotFound('page not found')
             if exists:
-               user_exercise_code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+               user_exercise_code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-id')[:1]
                if user_exercise_code.exists():
                   code = user_exercise_code[0].content
                   # cache.set(string, code)
@@ -87,16 +94,31 @@ def post_result(request):
     return render(request, "code/post_result.html", {'form': form})
     
 def result(request):
-    if request.method == 'POST' and request.user.is_authenticated():
+    if request.method == 'POST':
+        user = None
+        if request.user.is_authenticated():
+            user = request.user
         exercise_name = request.POST['exercise_id']
         try: 
           exercise = Exercise.objects.get(name=exercise_name)
-          code = Code.objects.filter(user_id=request.user, exercise_id= exercise).order_by('-date_created')[:1]
+          code = Code.objects.get(id = request.POST['code_id'])
+
           form = ResultForm(request.POST)
-          result = form.save(commit=False)
+          result = form.save(commit=False) 
+
+          if user == None:
+              # make sure the session is correct
+              if (code.session_key != request.session.session_key):
+                  raise PermissionDenied
+              result.session_key = code.session_key
+          else:
+              # make sure this user has access to this code
+              if (code.user_id.id != user.id):
+                  raise PermissionDenied
+          
           result.exercise_id = exercise
-          result.user_id = request.user
-          result.code_id = code[0]
+          result.user_id = user
+          result.code_id = code
           result.save()
         except Exercise.DoesNotExist:
           return HttpResponseNotFound('page not found')
