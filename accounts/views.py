@@ -11,6 +11,7 @@ from django.contrib.sessions.models import Session
 from user_code.models import Exercise
 from accounts.models import PmcUser
 from accounts.forms import PmcUserCreationForm, PmcUserChangeForm
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 def index(request):
 	return render(request, 'accounts/index.html')
@@ -96,3 +97,8 @@ def each_exercise(request,string):
 def profile(request):
     form = PmcUserChangeForm()
     return render(request, 'accounts/profile.html', {'form': form})
+
+@ensure_csrf_cookie
+def give_session(request):
+    request.session['anon'] = True
+    return render(request, 'accounts/session.html')
