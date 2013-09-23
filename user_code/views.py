@@ -43,8 +43,7 @@ def user_exercise(request, string):
                         exercise_id = exercise,
                         content = request.POST['code'],
                         engine = request.POST['engine'],
-                        isRevert = request.POST['isRevert'],
-                        isRerun = request.POST['isRerun'],
+                        isRevert = request.POST['isRevert']
                         )
         if user == None:
             new_code.session_key = request.session.session_key
