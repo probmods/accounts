@@ -4,15 +4,15 @@ from user_code.views import result, post_result
 from django.contrib import admin
 admin.autodiscover()
 
+# urlpatterns = patterns('',
+#     # Examples:
+#     url(r'^$', index, name="index"),
+#     url(r'^home$', home, name="home"),
+#     url(r'^admin', include(admin.site.urls)),
+# )
+
+
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^$', index, name="index"),
-    url(r'^home$', home, name="home"),
-    url(r'^admin', include(admin.site.urls)),
-)
-
-
-urlpatterns += patterns('',
                         url(r'^session$', give_session, name="sesson"),
                         url(r'^profile$', profile, name="profile"),
                         url(r'^login$', log_in, name="log_in"),
