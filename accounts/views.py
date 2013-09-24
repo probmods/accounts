@@ -14,8 +14,9 @@ from accounts.forms import PmcUserCreationForm, PmcUserChangeForm
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 def index(request):
-	return render(request, 'accounts/index.html')
+    return render(request, 'accounts/index.html')
 	
+
 def register(request):
     state = ''
     if request.method == 'POST':   # save user
@@ -26,40 +27,42 @@ def register(request):
             state = "Successfully created an account, please login"
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
             login(request, new_user)
-            response = redirect("home")
+            response = redirect(request.session['register_referer'])
             response.set_cookie('gg', 2)
             return response
         else: 
             state = 'Sorry, there was an error processing your request'
-    else:   #create user
+    else:
+        request.session['register_referer'] = request.META.get('HTTP_REFERER')
         form = PmcUserCreationForm()
-    return render(request, "accounts/register.html", {'form': form, 'state': state})
+    return render(request, "accounts/register.html", {'form': form, 'state': state})	
 
 def log_in(request):
-  if request.user.is_authenticated():
-    return redirect('/home')
-  else:
-      state = "Please log in below..."  
-      username = password = ''
-      if request.POST: 
-          form = AuthenticationForm(data=request.POST)
-          username = request.POST['username']
-          password = request.POST['password']
-          user = authenticate(username=username, password=password) 
-          if user is not None:
-              if user.is_active:
-                  login(request, user)
-                  state = "You're successfully logged in!"
-                  response = redirect('home')
-                  response.set_cookie('gg','1')
-                  return response
-              else:
-                state = "Your account is not active, please contact the site admin."
-          else:
-              state = "Your username and/or password was incorrect."
-      else:
-          form = AuthenticationForm()
-  return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
+    if request.user.is_authenticated():
+        return redirect('/home')
+    else:          
+        state = "Please log in below..."
+        username = password = ''		
+        if request.POST:
+            form = AuthenticationForm(data=request.POST)
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password) 
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    state = "You're successfully logged in!"
+                    response = redirect(request.session['login_referer'])
+                    response.set_cookie('gg','1')
+                    return response
+                else:
+                    state = "Your account is not active, please contact the site admin."
+            else:
+                state = "Your username and/or password was incorrect."
+        else:
+            request.session['login_referer'] = request.META.get('HTTP_REFERER')
+            form = AuthenticationForm()
+            return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
 
 def home(request):
     if request.user.is_authenticated():
