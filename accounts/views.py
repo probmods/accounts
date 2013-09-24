@@ -27,13 +27,13 @@ def register(request):
             state = "Successfully created an account, please login"
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
             login(request, new_user)
-            response = redirect(request.session['register_referer'])
+            response = redirect(request.session.get('register_referer', '/'))
             response.set_cookie('gg', 2)
             return response
         else: 
             state = 'Sorry, there was an error processing your request'
     else:
-        request.session['register_referer'] = request.META.get('HTTP_REFERER')
+        request.session['register_referer'] = request.META.get('HTTP_REFERER', '/')
         form = PmcUserCreationForm()
     return render(request, "accounts/register.html", {'form': form, 'state': state})	
 
@@ -52,7 +52,7 @@ def log_in(request):
                 if user.is_active:
                     login(request, user)
                     state = "You're successfully logged in!"
-                    response = redirect(request.session['login_referer'])
+                    response = redirect(request.session.get('login_referer',  '/'))
                     response.set_cookie('gg','1')
                     return response
                 else:
@@ -60,7 +60,7 @@ def log_in(request):
             else:
                 state = "Your username and/or password was incorrect."
         else:
-            request.session['login_referer'] = request.META.get('HTTP_REFERER')
+            request.session['login_referer'] = request.META.get('HTTP_REFERER', '/')
             form = AuthenticationForm()
             return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
 
