@@ -72,7 +72,7 @@ def home(request):
 
 def log_out(request):
     logout(request)
-    response = redirect('index')
+    response = redirect( request.META.get('HTTP_REFERER') )
     response.delete_cookie('gg')
     return response
     
