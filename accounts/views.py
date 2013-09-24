@@ -39,7 +39,7 @@ def register(request):
 
 def log_in(request):
     if request.user.is_authenticated():
-        return redirect('/home')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     else:          
         state = "Please log in below..."
         username = password = ''		
