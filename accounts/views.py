@@ -28,7 +28,7 @@ def register(request):
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
             login(request, new_user)
             response = redirect(request.session.get('register_referer', '/'))
-            response.set_cookie('gg', 2)
+            response.set_cookie('gg', 2, max_age = 70000000)
             return response
         else: 
             state = 'Sorry, there was an error processing your request'
@@ -53,7 +53,7 @@ def log_in(request):
                     login(request, user)
                     state = "You're successfully logged in!"
                     response = redirect(request.session.get('login_referer',  '/'))
-                    response.set_cookie('gg','1')
+                    response.set_cookie('gg','1', max_age = 70000000)
                     return response
                 else:
                     state = "Your account is not active, please contact the site admin."
@@ -62,7 +62,7 @@ def log_in(request):
         else:
             request.session['login_referer'] = request.META.get('HTTP_REFERER', '/')
             form = AuthenticationForm()
-            return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
+    return render(request, 'accounts/auth.html', {'state': state, 'form' : form})
 
 def home(request):
     if request.user.is_authenticated():
