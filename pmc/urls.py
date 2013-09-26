@@ -14,7 +14,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
                         url(r'^session$', give_session, name="sesson"),
-                        url(r'^profile$', profile, name="profile"),
+                        # url(r'^profile$', profile, name="profile"),
                         url(r'^login$', log_in, name="log_in"),
                         url(r'^register$', register, name="register"),
                         url(r'^logout$', log_out, name="log_out"),
