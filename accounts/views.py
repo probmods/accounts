@@ -15,7 +15,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 def index(request):
     return render(request, 'accounts/index.html')
-	
+
+def account_status(request):
+    if request.user.is_authenticated():
+        return HttpResponse("dds32")
+    else:
+        return HttpResponse("")
+
 
 def register(request):
     state = ''

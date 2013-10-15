@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from accounts.views import index, home, log_in, register, log_out,all_exercises, each_exercise, profile, give_session
+from accounts.views import index, home, log_in, register, log_out,all_exercises, each_exercise, profile, give_session, account_status
 from user_code.views import result, post_result
 from django.contrib import admin
 admin.autodiscover()
@@ -14,6 +14,8 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
                         url(r'^session$', give_session, name="sesson"),
+                        url(r'^account_status$', account_status, name="account_status"),
+                        
                         # url(r'^profile$', profile, name="profile"),
                         url(r'^login$', log_in, name="log_in"),
                         url(r'^register$', register, name="register"),
