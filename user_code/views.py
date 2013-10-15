@@ -71,7 +71,7 @@ def user_exercise(request, string):
                    return HttpResponseNotFound('page not found')
           data = simplejson.dumps({'code': code, 'engine': engine})
           return HttpResponse(data, mimetype = 'application/json')
-    # return render(request, "code/exercise.html", {'code' : code})
+    return HttpResponseNotFound('page not found')
     
 def view_all(request, string): 
     state = ''
