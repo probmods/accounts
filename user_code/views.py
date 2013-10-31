@@ -35,7 +35,8 @@ def all_user_exercise(request):
 
     ## eri named the foreign key objects poorly
     ## what should be "user_id" is actually "user"
-    all_exercise_names = Code.objects.filter(exercise_id__name__contains="play-space").values("exercise_id__id", "exercise_id__name").distinct()
+    all_exercise_names = Code.objects.filter(user_id = user,
+                                             exercise_id__name__contains="play-space").values("exercise_id__id", "exercise_id__name").distinct()
 
     ## HT http://stackoverflow.com/a/4424482/351392 and
     ## other answers on that page
