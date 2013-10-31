@@ -28,7 +28,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^code', include('user_code.urls', namespace="user_code")),
-    url(r'^post_result$', post_result, name ='post_result'),
-    url(r'^result$', result, name ='result'),
+                        url(r'^code', include('user_code.urls', namespace="user_code")),
+                        url(r'^post_result$', post_result, name ='post_result'),
+                        url(r'^result$', result, name ='result'),
 )

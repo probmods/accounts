@@ -15,7 +15,6 @@ from django.views.decorators.http import condition
 from django.core.exceptions import PermissionDenied
 from django.utils import simplejson
 
-
 ## TODO: etag is row id of resource
 ## we need to set and get this from memcache based on the user and exerciseName
 def dummyetag(request, *args, **kwargs):
@@ -23,6 +22,33 @@ def dummyetag(request, *args, **kwargs):
 
 ## TODO: last modified is the time of insertion into database
 ## we need to set and get this from memcache based on the user and exerciseName
+
+def all_user_exercise(request):
+    user = None
+    if not request.user.is_authenticated():
+        return HttpResponseNotFound('page not found')
+
+    if not request.method == "GET":
+        return HttpResponseNotFound('page not found')
+
+    user = request.user
+
+    ## eri named the foreign key objects poorly
+    ## what should be "user_id" is actually "user"
+    all_exercise_names = Code.objects.filter(exercise_id__name__contains="play-space").values("exercise_id__id", "exercise_id__name").distinct()
+
+    ## HT http://stackoverflow.com/a/4424482/351392 and
+    ## other answers on that page
+    ## NB this can 
+    all_exercise_names = list(all_exercise_names)
+        
+        
+        
+    #  print simplejson.dumps( all_exercise_names[0] )
+   
+    data = simplejson.dumps( all_exercise_names )
+    return HttpResponse(data, mimetype = 'application/json')
+
 
 #@condition(etag_func = dummyetag)
 #@cache_page(60 * 60 * 24) # 60 seconds (1 minute) * 60 minutes (1 hour) * 24 hours (1 day)
