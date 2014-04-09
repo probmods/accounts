@@ -32,6 +32,7 @@ def register(request):
             new_user.is_active = True
             state = "Successfully created an account, please login"
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
+            login(request, new_user)
 
             response = redirect(request.session.get('register_referer', '/'))
             response.set_cookie('gg', 2, max_age = 70000000)
