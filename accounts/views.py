@@ -32,14 +32,18 @@ def register(request):
             new_user.is_active = True
             state = "Successfully created an account, please login"
             new_user = authenticate(username=request.POST['email'], password=request.POST['password1']  )
-            login(request, new_user)
+
             response = redirect(request.session.get('register_referer', '/'))
             response.set_cookie('gg', 2, max_age = 70000000)
             return response
         else: 
             state = 'Sorry, there was an error processing your request'
     else:
-        request.session['register_referer'] = request.META.get('HTTP_REFERER', '/')
+        referer = request.META.get('HTTP_REFERER', '/')
+        # if we came from the login page, then go to the index after registration
+        if "login" in referer:
+            referer = "/"
+        request.session['register_referer'] = referer
         form = PmcUserCreationForm()
     return render(request, "accounts/register.html", {'form': form, 'state': state})	
 
