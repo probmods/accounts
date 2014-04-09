@@ -61,4 +61,10 @@ authenticated, it will also do nothing.
 	
 
 # Deploying 
-make sure that `custom_user` and `south` are added to the `INSTALLED_APPS` section of settings.py
+Need to make sure that `custom_user` and `south` are added to the `INSTALLED_APPS` section of settings.py
+
+To actually deploy any changes, SSH to the server. Then cd to the django directory and do:
+
+    git pull origin master
+    sudo service uwsgi restart
+    sudo service nginx restart
