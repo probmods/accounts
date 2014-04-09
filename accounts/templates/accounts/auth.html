@@ -3,13 +3,68 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}	
-	{{ state }}
+<style>
+.label {
+font-family: Verdana;
+font-size: 9px;
+font-weight: bold;
+text-transform: uppercase;
+}
+
+input {
+margin: 0
+}
+
+ul.errorlist {
+display: inline;
+color: red;
+list-style-type: none;
+text-transform: none;
+margin: 0;
+padding: 0
+}
+
+ul.errorlist li {
+margin: 0;
+padding: 0;
+}
+
+input[type=radio] {
+margin: 4px
+}
+
+iframe {
+height: 600px;
+position: absolute;
+top: 0;
+left: 0;
+display: none;
+border: 1px solid black;
+
+}
+</style>
+<div id="login-container">
+  <h2>{{ state }}</h2>
 	<form action="{% url 'log_in'%}" method="post">
 		{% csrf_token %}
-		{{ form.as_p }}
+    <p>
+      <div class='label'>{{form.username.label}} {{form.username.errors}}</div>
+		  {{form.username}} 
+    </p>
+
+    <p>
+      <div class='label'>{{form.password.label}} {{form.password.errors}} </div>
+		  {{form.password}}
+    </p> 
+
 		<input type="submit" value="Log In" />
 	</form>
-	</br></br>
+</div>
+
+<p id='reg-teaser'>Don't have an account yet? <a href='/register'>Register one</a></p>
+
+<p>Forgot your password? Email <span style='text-decoration: underline'>probmods@<span style='display: none'>REMOVEME</span>gmail.com</span></p>
+  
 {% endblock %} 	
 
 

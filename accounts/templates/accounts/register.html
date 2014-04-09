@@ -35,7 +35,7 @@
   }
 
 </style>
-
+<h2>Register</h2>
 	<form action="{% url 'register'%}" method="post">
 		{% csrf_token %}
     
@@ -75,5 +75,5 @@
 		<input type="submit" value="Register">
 	</form>
 	</br></br>
-	<a href='/'>back</a>
+
 {% endblock %}

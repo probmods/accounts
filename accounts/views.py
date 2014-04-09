@@ -47,7 +47,7 @@ def log_in(request):
     if request.user.is_authenticated():
         return redirect(request.META.get('HTTP_REFERER', '/'))
     else:          
-        state = "Please log in below..."
+        state = "Login"
         username = password = ''		
         if request.POST:
             form = AuthenticationForm(data=request.POST)
