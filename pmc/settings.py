@@ -2,7 +2,7 @@ import os
 
 # Django settings for pmc project.
 
-DEBUG = True # remember to set ALLOWED_HOSTS if False
+DEBUG = False # remember to set ALLOWED_HOSTS if False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
